@@ -97,7 +97,7 @@ async function run() {
 
 
         // users: get users
-        app.get('/appointments', verifyIdToken, async (req, res) => {
+        app.get('/appointments', varifyToken, async (req, res) => {
             const email = req.query.email;
             const date = new Date(req.query.date).toLocaleDateString();
 
