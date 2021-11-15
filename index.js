@@ -4,6 +4,8 @@ const cors = require('cors');
 const admin = require("firebase-admin");
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
+const fileUpload = require('express-fileupload');
+
 
 const port = process.env.PORT || 5000;
 
@@ -16,6 +18,7 @@ admin.initializeApp({
 
 app.use(cors());
 app.use(express.json());
+app.use(fileUpload());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.cnelf.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
@@ -130,6 +133,19 @@ async function run() {
             }
             const result = await doctorsCollection.insertOne(doctor);
             res.json(result);
+        })
+
+        // pement api
+
+        app.post('/create-payment-intent', async (req, res) => {
+            const paymentInfo = req.body;
+            const amount = paymentInfo.price * 100;
+            const paymentIntent = await stripe.paymentIntents.create({
+                currency: 'usd',
+                amount: amount,
+                payment_method_types: ['card']
+            });
+            res.json({ clientSecret: paymentIntent.client_secret })
         })
 
 
