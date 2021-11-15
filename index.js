@@ -5,6 +5,7 @@ const admin = require("firebase-admin");
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
 const fileUpload = require('express-fileupload');
+const ObjectId = require('mongodb').ObjectId;
 
 
 const port = process.env.PORT || 5000;
@@ -111,6 +112,14 @@ async function run() {
             const appointments = await cursor.toArray();
             res.json(appointments);
         });
+
+
+        app.get('/appointments/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await appointmentsCollection.findOne(query);
+            res.json(result);
+        })
 
 
         // doctors api
