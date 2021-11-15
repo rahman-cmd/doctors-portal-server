@@ -46,6 +46,7 @@ async function run() {
         const database = client.db('doctors_portal');
         const appointmentsCollection = database.collection('appointments');
         const usersCollection = database.collection('users');
+        const doctorsCollection = database.collection('doctors');
 
         app.post('/appointments', async (req, res) => {
             const appointment = req.body;
