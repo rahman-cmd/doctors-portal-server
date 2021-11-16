@@ -119,6 +119,19 @@ async function run() {
             const query = { _id: ObjectId(id) };
             const result = await appointmentsCollection.findOne(query);
             res.json(result);
+        });
+
+        app.put('/appointments/:id', async (req, res) => {
+            const id = req.params.id;
+            const payment = req.body;
+            const filter = { _id: ObjectId(id) };
+            const updateDoc = {
+                $set: {
+                    payment: payment
+                }
+            };
+            const result = await appointmentsCollection.updateOne(filter, updateDoc);
+            res.json(result);
         })
 
 
