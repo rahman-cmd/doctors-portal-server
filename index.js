@@ -6,6 +6,7 @@ require('dotenv').config();
 const { MongoClient } = require('mongodb');
 const fileUpload = require('express-fileupload');
 const ObjectId = require('mongodb').ObjectId;
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 
 const port = process.env.PORT || 5000;
@@ -127,6 +128,8 @@ async function run() {
             res.json(result);
         });
 
+
+        // put user from firebase
         app.put('/users', async (req, res) => {
             const user = req.body;
             const filter = { email: user.email };
@@ -136,6 +139,7 @@ async function run() {
 
         });
 
+        // Make admin api
         app.put('/users/admin', varifyToken, async (req, res) => {
             const user = req.body;
             const requester = req.decodedEmail;
